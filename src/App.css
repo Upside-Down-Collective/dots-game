@@ -5,11 +5,13 @@
 }
 
 .Grid {
-  background-color: lightgray;
+  background-color: whitesmoke;
   width: 50rem;
   height: 50rem;
   margin: 5rem;
   padding: 2.5rem;
+  border: 2px black solid;
+  border-radius: 20px;
   position: relative;
   box-sizing: content-box;
 }
@@ -25,8 +27,13 @@
 
 .line {
   height: .5rem;
-  background-color: black;
+  background-color: lightgray;
   position: absolute;
+}
+
+.line:hover{
+  background-color: grey;
+  cursor: pointer;
 }
 
 .v-line {
