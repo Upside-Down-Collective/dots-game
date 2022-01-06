@@ -9,6 +9,22 @@ class Line {
         this.isOccupied = 0; // 0 - no, 1 - player1, 2 - player2
         this.color = ["lightgray", "darkred", "black"]
     }
+
+    checkNeighbours() {
+        let points = 0;
+        let squareComplete = true;
+        for (const squares of this.neighbours) {
+            squareComplete = true;
+            for (const line of squares) {
+                if (line.isOccupied !== this.isOccupied) {
+                    squareComplete = false;
+                    break;
+                }
+            }
+            if (squareComplete) points++;
+        }
+        return points;
+    }
 }
 
 function makeGrid(gridSize) {
@@ -72,15 +88,31 @@ function drawDots(gridSize) {
 function Grid({ gridSize }) {
     const [lines, setLines] = useState([])
     const [turns, setTurns] = useState(0)
+    const [points, setPoints] = useState([0, 0]);
+
 
     useEffect(() => {
         setLines(makeGrid(gridSize))
     }, [gridSize])
 
+    useEffect(() => {
+        console.log(`player 1: ${points[0]} points, player 2: ${points[1]} points`)
+        console.log("player " + (turns % 2 + 1) + " turn");
+    }, [turns])
+
     function handleClick(line) {
-        const temp = [...lines];
-        temp[line.y][line.x].isOccupied = 1;
-        setLines([...temp]);
+        if (line.isOccupied === 0) {
+            const temp = [...lines];
+            temp[line.y][line.x].isOccupied = (turns % 2 + 1);
+
+            setPoints(p => {
+                const prev = [...p];
+                prev[turns % 2] += temp[line.y][line.x].checkNeighbours()
+                return prev;
+            })
+            setLines([...temp]);
+            setTurns(prev => prev + 1)
+        }
     }
 
     return (
@@ -91,7 +123,7 @@ function Grid({ gridSize }) {
                         top: `${gridSize * line.y + 2.5}rem`,
                         left: `${gridSize * 2 * line.x + 2.5}rem`,
                         width: `${gridSize * 2}rem`,
-                        backgroundColor: line.color[line.isOccupied]
+                        backgroundColor: `${line.isOccupied > 0 && line.color[line.isOccupied]}`
                     }}
                         onClick={() => handleClick(line)}
                         key={Math.random() * 10000}></div>

@@ -27,7 +27,7 @@
 
 .line {
   height: .5rem;
-  /* background-color: lightgray; */
+  background-color: lightgray;
   position: absolute;
 }
 
