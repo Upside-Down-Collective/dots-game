@@ -78,9 +78,9 @@ function Grid({ gridSize }) {
     }, [gridSize])
 
     function handleClick(line) {
-        console.log(line, line.neighbours);
-        // check if it's a box; if box => +1 point.
-        // line.isOccupied = 1; <- doesn't work. copy the whole array, change value, update array in setLines. Immer?
+        const temp = [...lines];
+        temp[line.y][line.x].isOccupied = 1;
+        setLines([...temp]);
     }
 
     return (
