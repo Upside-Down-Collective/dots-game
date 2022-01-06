@@ -6,8 +6,8 @@ class Line {
         this.y = y;
         this.isHorisontal = h;
         this.neighbours = [];
-        this.isOccupied = 0; // 0 - no, 1 - player1, 2 - player2
-        this.color = ["lightgray", "darkred", "black"]
+        this.isTaken = 0; // 0 - no, 1 - player1, 2 - player2
+        this.color = ["lightgray", "#faa613", "black"]
     }
 
     checkNeighbours() {
@@ -16,7 +16,7 @@ class Line {
         for (const squares of this.neighbours) {
             squareComplete = true;
             for (const line of squares) {
-                if (line.isOccupied !== this.isOccupied) {
+                if (line.isTaken === 0) {
                     squareComplete = false;
                     break;
                 }
@@ -101,9 +101,9 @@ function Grid({ gridSize }) {
     }, [turns])
 
     function handleClick(line) {
-        if (line.isOccupied === 0) {
+        if (line.isTaken === 0) {
             const temp = [...lines];
-            temp[line.y][line.x].isOccupied = (turns % 2 + 1);
+            temp[line.y][line.x].isTaken = (turns % 2 + 1);
 
             setPoints(p => {
                 const prev = [...p];
@@ -123,7 +123,7 @@ function Grid({ gridSize }) {
                         top: `${gridSize * line.y + 2.5}rem`,
                         left: `${gridSize * 2 * line.x + 2.5}rem`,
                         width: `${gridSize * 2}rem`,
-                        backgroundColor: `${line.isOccupied > 0 && line.color[line.isOccupied]}`
+                        backgroundColor: `${line.isTaken > 0 && line.color[line.isTaken]}`
                     }}
                         onClick={() => handleClick(line)}
                         key={Math.random() * 10000}></div>
