@@ -98,20 +98,21 @@ function Grid({ gridSize }) {
     useEffect(() => {
         console.log(`player 1: ${points[0]} points, player 2: ${points[1]} points`)
         console.log("player " + (turns % 2 + 1) + " turn");
-    }, [turns])
+    }, [turns, points])
 
     function handleClick(line) {
         if (line.isTaken === 0) {
             const temp = [...lines];
             temp[line.y][line.x].isTaken = (turns % 2 + 1);
 
+            let score = temp[line.y][line.x].checkNeighbours()
             setPoints(p => {
                 const prev = [...p];
-                prev[turns % 2] += temp[line.y][line.x].checkNeighbours()
+                prev[turns % 2] += score;
                 return prev;
             })
             setLines([...temp]);
-            setTurns(prev => prev + 1)
+            if (score === 0) setTurns(prev => prev + 1)
         }
     }
 
