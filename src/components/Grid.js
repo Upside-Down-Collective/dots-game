@@ -1,15 +1,17 @@
+import { useEffect, useState } from 'react';
+
 class Line {
     constructor(x, y, h) {
         this.x = x;
         this.y = y;
         this.isHorisontal = h;
         this.neighbours = [];
+        this.isOccupied = 0; // 0 - no, 1 - player1, 2 - player2
+        this.color = ["lightgray", "darkred", "black"]
     }
 }
 
-function Grid({ gridSize }) {
-
-    //TODO: make this whole thing a function and just pass in gridSize, return gridLines
+function makeGrid(gridSize) {
     let gridLines = [];
     for (let i = 0; i < gridSize * 2 + 1; i++) {
         let row = [];
@@ -51,39 +53,51 @@ function Grid({ gridSize }) {
             }
         }
     }
+    return gridLines;
+}
 
-    function drawDots() {
-        const circles = [];
-        for (let i = 0; i < gridSize + 1; i++) {
-            for (let j = 0; j < gridSize + 1; j++) {
-                circles.push((<div className="circle" style={{
-                    top: `${gridSize * 2 * i + 2.5}rem`,
-                    left: `${gridSize * 2 * j + 2.5}rem`
-                }} key={Math.random() * 10000}></div>))
-            }
+function drawDots(gridSize) {
+    const circles = [];
+    for (let i = 0; i < gridSize + 1; i++) {
+        for (let j = 0; j < gridSize + 1; j++) {
+            circles.push((<div className="circle" style={{
+                top: `${gridSize * 2 * i + 2.5}rem`,
+                left: `${gridSize * 2 * j + 2.5}rem`
+            }} key={Math.random() * 10000}></div>))
         }
-        return circles;
     }
+    return circles;
+}
+
+function Grid({ gridSize }) {
+    const [lines, setLines] = useState([])
+    const [turns, setTurns] = useState(0)
+
+    useEffect(() => {
+        setLines(makeGrid(gridSize))
+    }, [gridSize])
 
     function handleClick(line) {
         console.log(line, line.neighbours);
         // check if it's a box; if box => +1 point.
+        // line.isOccupied = 1; <- doesn't work. copy the whole array, change value, update array in setLines. Immer?
     }
 
     return (
         <div className="Grid">
             {//draws lines
-                gridLines.map(row => (row.map(line => (
+                lines.map(row => (row.map(line => (
                     < div className={`line ${line.isHorisontal ? "h-line" : "v-line"}`} style={{
                         top: `${gridSize * line.y + 2.5}rem`,
                         left: `${gridSize * 2 * line.x + 2.5}rem`,
-                        width: `${gridSize * 2}rem`
+                        width: `${gridSize * 2}rem`,
+                        backgroundColor: line.color[line.isOccupied]
                     }}
                         onClick={() => handleClick(line)}
                         key={Math.random() * 10000}></div>
                 ))))
             }
-            {drawDots()}
+            {drawDots(gridSize)}
 
         </div >
     )
