@@ -20,7 +20,15 @@
   position: absolute;
   width: 10rem;
   height: 10rem;
-  opacity: 80%;
+  opacity: 70%;
+}
+
+.box.player1{
+  background-color: orange;
+}
+
+.box.player2{
+  background-color: blue;
 }
 
 .circle{
@@ -38,7 +46,15 @@
   position: absolute;
 }
 
-.line:hover{
+.line.player1{
+  background-color: orange;
+}
+
+.line.player2{
+  background-color: blue;
+}
+
+.line.gray:hover{
   background-color: grey;
   cursor: pointer;
 }

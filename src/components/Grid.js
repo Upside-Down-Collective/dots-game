@@ -7,7 +7,7 @@ class Line {
         this.isHorisontal = h;
         this.neighbours = [];
         this.isTaken = 0; // 0 - no, 1 - player1, 2 - player2
-        this.color = ["lightgray", "#faa613", "black"]
+        this.colors = ["gray", "player1", "player2"]
     }
 
     checkNeighbours() {
@@ -25,7 +25,6 @@ class Line {
             if (squareComplete) {
                 points++;
                 //figuring out what box to color
-                console.log(squares)
                 if (this.isHorisontal) {
                     boxCoords.push(this.y > squares[0].y ? { x: squares[0].x, y: squares[0].y / 2 } : { x: this.x, y: this.y / 2 })
                 }
@@ -115,15 +114,11 @@ function makeBoxes(gridSize) {
 }
 
 function Grid({ gridSize }) {
-    const [lines, setLines] = useState([]);
+    const [lines, setLines] = useState(makeGrid(gridSize));
     const [boxes, setBoxes] = useState(makeBoxes(gridSize));
     const [turns, setTurns] = useState(0);
     const [points, setPoints] = useState([0, 0]);
     const [lineCount, setLineCount] = useState(0);
-
-    useEffect(() => {
-        setLines(makeGrid(gridSize))
-    }, [gridSize])
 
     useEffect(() => {
         console.log(`player 1: ${points[0]} points, player 2: ${points[1]} points`)
@@ -139,9 +134,9 @@ function Grid({ gridSize }) {
                 console.log("it's a draw.")
             }
         }
-
     }, [lineCount])
 
+    // test with useCallback
     function handleClick(line) {
         if (line.isTaken === 0) {
             const tempLine = [...lines];
@@ -161,42 +156,49 @@ function Grid({ gridSize }) {
                 setBoxes(prev => {
                     const p = [...prev];
                     for (const c of boxCoords) {
-                        p[c.y * gridSize + c.x].color = tempLine[line.y][line.x].color[turns % 2 + 1];
+                        p[c.y * gridSize + c.x].color = tempLine[line.y][line.x].colors[turns % 2 + 1];
                     }
                     return p;
                 })
-                console.log(boxCoords, tempLine)
             }
             setLineCount(prev => prev + 1)
         }
     }
 
-    return (
-        <div className="Grid">
-            {//draws boxes (squares)
-                boxes.map(box => (
-                    <div className="box" key={Math.random() * 1000} style={{
-                        top: `${box.y * gridSize * 2 + gridSize / 2}rem`,
-                        left: `${box.x * gridSize * 2 + gridSize / 2}rem`,
-                        backgroundColor: box.color
-                    }}></div>
-                ))
-            }
-            {//draws lines
-                lines.map(row => (row.map(line => (
-                    < div className={`line ${line.isHorisontal ? "h-line" : "v-line"}`} style={{
-                        top: `${gridSize * line.y + 2.5}rem`,
-                        left: `${gridSize * 2 * line.x + 2.5}rem`,
-                        width: `${gridSize * 2}rem`,
-                        backgroundColor: `${line.isTaken > 0 && line.color[line.isTaken]}`
-                    }}
-                        onClick={() => handleClick(line)}
-                        key={Math.random() * 10000}></div>
-                ))))
-            }
-            {drawDots(gridSize)}
+    function restart() {
+        setLines(makeGrid(gridSize));
+        setBoxes(makeBoxes(gridSize));
+        setTurns(0);
+        setPoints([0, 0]);
+        setLineCount(0)
+    }
 
-        </div >
+    return (
+        <>
+            <div className="Grid">
+                {//draws boxes (squares)
+                    boxes.map(box => (
+                        <div className={`box ${box.color}`} key={Math.random() * 1000} style={{
+                            top: `${box.y * gridSize * 2 + gridSize / 2}rem`,
+                            left: `${box.x * gridSize * 2 + gridSize / 2}rem`
+                        }}></div>
+                    ))
+                }
+                {//draws lines
+                    lines.map(row => (row.map(line => (
+                        < div className={`line ${line.isHorisontal ? "h-line" : "v-line"} ${line.colors[line.isTaken]}`} style={{
+                            top: `${gridSize * line.y + 2.5}rem`,
+                            left: `${gridSize * 2 * line.x + 2.5}rem`,
+                            width: `${gridSize * 2}rem`
+                        }}
+                            onClick={() => handleClick(line)}
+                            key={Math.random() * 10000}></div>
+                    ))))
+                }
+                {drawDots(gridSize)}
+            </div >
+            <button onClick={restart}>restart</button> {/*this is a temporary thing*/}
+        </>
     )
 }
 
