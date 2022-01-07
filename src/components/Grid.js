@@ -179,16 +179,16 @@ function Grid({ gridSize }) {
                 {//draws boxes (squares)
                     boxes.map(box => (
                         <div className={`box ${box.color}`} key={Math.random() * 1000} style={{
-                            top: `${box.y * gridSize * 2 + gridSize / 2}rem`,
-                            left: `${box.x * gridSize * 2 + gridSize / 2}rem`
+                            top: `${box.y * gridSize * 2 + gridSize / 2 + 0.375}rem`,
+                            left: `${box.x * gridSize * 2 + gridSize / 2 + 0.7}rem`
                         }}></div>
                     ))
                 }
                 {//draws lines
                     lines.map(row => (row.map(line => (
                         < div className={`line ${line.isHorisontal ? "h-line" : "v-line"} ${line.colors[line.isTaken]}`} style={{
-                            top: `${gridSize * line.y + 2.5}rem`,
-                            left: `${gridSize * 2 * line.x + 2.5}rem`,
+                            top: `${gridSize * line.y + gridSize / 2 + 0.375}rem`,
+                            left: `${gridSize * 2 * line.x + gridSize / 2 + 0.7}rem`,
                             width: `${gridSize * 2}rem`
                         }}
                             onClick={() => handleClick(line)}
