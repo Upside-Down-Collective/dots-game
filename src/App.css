@@ -16,6 +16,13 @@
   box-sizing: content-box;
 }
 
+.box {
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  opacity: 80%;
+}
+
 .circle{
   border-radius: 50%;
   width: 1.5rem;

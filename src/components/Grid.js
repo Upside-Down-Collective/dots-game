@@ -13,6 +13,7 @@ class Line {
     checkNeighbours() {
         let points = 0;
         let squareComplete = true;
+        let boxCoords = [];
         for (const squares of this.neighbours) {
             squareComplete = true;
             for (const line of squares) {
@@ -21,9 +22,27 @@ class Line {
                     break;
                 }
             }
-            if (squareComplete) points++;
+            if (squareComplete) {
+                points++;
+                //figuring out what box to color
+                console.log(squares)
+                if (this.isHorisontal) {
+                    boxCoords.push(this.y > squares[0].y ? { x: squares[0].x, y: squares[0].y / 2 } : { x: this.x, y: this.y / 2 })
+                }
+                else {
+                    boxCoords.push({ x: squares[0].x, y: squares[0].y / 2 })
+                }
+            }
         }
-        return points;
+        return { points, boxCoords };
+    }
+}
+
+class Box {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.color = "";
     }
 }
 
@@ -48,23 +67,23 @@ function makeGrid(gridSize) {
     for (let i = 0; i < gridLines.length; i++) {
         for (let j = 0; j < gridLines[i].length; j++) {
             if (gridLines[i][j].isHorisontal) {
-                //checking for bottom square
+                //checking for bottom square, opposite line is first
                 if (gridLines[i + 1]) {
-                    gridLines[i][j].neighbours.push([gridLines[i + 1][j + 1], gridLines[i + 1][j], gridLines[i + 2][j]])
+                    gridLines[i][j].neighbours.push([gridLines[i + 2][j], gridLines[i + 1][j + 1], gridLines[i + 1][j]])
                 }
                 //checking for top square
                 if (gridLines[i - 1]) {
-                    gridLines[i][j].neighbours.push([gridLines[i - 1][j + 1], gridLines[i - 1][j], gridLines[i - 2][j]])
+                    gridLines[i][j].neighbours.push([gridLines[i - 2][j], gridLines[i - 1][j + 1], gridLines[i - 1][j]])
                 }
             }
             else {
-                //left square
+                //left square, top line is first
                 if (gridLines[i][j - 1]) {
-                    gridLines[i][j].neighbours.push([gridLines[i][j - 1], gridLines[i - 1][j - 1], gridLines[i + 1][j - 1]])
+                    gridLines[i][j].neighbours.push([gridLines[i - 1][j - 1], gridLines[i][j - 1], gridLines[i + 1][j - 1]])
                 }
                 //right square
                 if (gridLines[i][j + 1]) {
-                    gridLines[i][j].neighbours.push([gridLines[i][j + 1], gridLines[i - 1][j], gridLines[i + 1][j]])
+                    gridLines[i][j].neighbours.push([gridLines[i - 1][j], gridLines[i][j + 1], gridLines[i + 1][j]])
                 }
             }
         }
@@ -85,11 +104,22 @@ function drawDots(gridSize) {
     return circles;
 }
 
-function Grid({ gridSize }) {
-    const [lines, setLines] = useState([])
-    const [turns, setTurns] = useState(0)
-    const [points, setPoints] = useState([0, 0]);
+function makeBoxes(gridSize) {
+    const boxes = [];
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            boxes.push(new Box(j, i))
+        }
+    }
+    return boxes;
+}
 
+function Grid({ gridSize }) {
+    const [lines, setLines] = useState([]);
+    const [boxes, setBoxes] = useState(makeBoxes(gridSize));
+    const [turns, setTurns] = useState(0);
+    const [points, setPoints] = useState([0, 0]);
+    const [lineCount, setLineCount] = useState(0);
 
     useEffect(() => {
         setLines(makeGrid(gridSize))
@@ -98,26 +128,60 @@ function Grid({ gridSize }) {
     useEffect(() => {
         console.log(`player 1: ${points[0]} points, player 2: ${points[1]} points`)
         console.log("player " + (turns % 2 + 1) + " turn");
-    }, [turns, points])
+        if (lineCount === gridSize * (gridSize + 1) + (gridSize + 1) * gridSize) {
+            if (points[0] > points[1]) {
+                console.log("player 1 won!")
+            }
+            else if (points[1] > points[0]) {
+                console.log("player 2 won!")
+            }
+            else {
+                console.log("it's a draw.")
+            }
+        }
+
+    }, [lineCount])
 
     function handleClick(line) {
         if (line.isTaken === 0) {
-            const temp = [...lines];
-            temp[line.y][line.x].isTaken = (turns % 2 + 1);
+            const tempLine = [...lines];
+            tempLine[line.y][line.x].isTaken = (turns % 2 + 1);
 
-            let score = temp[line.y][line.x].checkNeighbours()
+            let { points: score, boxCoords } = tempLine[line.y][line.x].checkNeighbours()
             setPoints(p => {
                 const prev = [...p];
                 prev[turns % 2] += score;
                 return prev;
             })
-            setLines([...temp]);
-            if (score === 0) setTurns(prev => prev + 1)
+            setLines([...tempLine]);
+            if (score === 0) {
+                setTurns(prev => prev + 1)
+            }
+            else {
+                setBoxes(prev => {
+                    const p = [...prev];
+                    for (const c of boxCoords) {
+                        p[c.y * gridSize + c.x].color = tempLine[line.y][line.x].color[turns % 2 + 1];
+                    }
+                    return p;
+                })
+                console.log(boxCoords, tempLine)
+            }
+            setLineCount(prev => prev + 1)
         }
     }
 
     return (
         <div className="Grid">
+            {//draws boxes (squares)
+                boxes.map(box => (
+                    <div className="box" key={Math.random() * 1000} style={{
+                        top: `${box.y * gridSize * 2 + gridSize / 2}rem`,
+                        left: `${box.x * gridSize * 2 + gridSize / 2}rem`,
+                        backgroundColor: box.color
+                    }}></div>
+                ))
+            }
             {//draws lines
                 lines.map(row => (row.map(line => (
                     < div className={`line ${line.isHorisontal ? "h-line" : "v-line"}`} style={{
