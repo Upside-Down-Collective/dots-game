@@ -15,11 +15,6 @@
   font-family: 'Roboto', sans-serif;
 }
 
-body{
-  /* background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%); second option, idk*/
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); 
-}
-
 /* NAV  */
 .nav-bg{
   background-color: var(--base-color);
@@ -66,7 +61,7 @@ a:hover {
   align-items: flex-start;
   justify-content: center;
   gap: clamp(3rem, 5vw, 10rem);
-  padding: 3rem;
+  padding: 4rem 2rem 2rem 2rem;
 }
 
 .game-info {
@@ -207,5 +202,15 @@ a:hover {
 
   nav li{
     padding-left: 2rem;
+  }
+}
+
+@media (max-width: 470px) {
+  .game-grid{
+    font-size: 7px;
+  }
+
+  nav h1, nav li{
+      font-size: 1rem;
   }
 }

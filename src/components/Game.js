@@ -113,7 +113,7 @@ function makeBoxes(gridSize) {
     return boxes;
 }
 
-function Grid({ gridSize }) {
+function Game({ gridSize }) {
     const [lines, setLines] = useState(makeGrid(gridSize));
     const [boxes, setBoxes] = useState(makeBoxes(gridSize));
     const [turns, setTurns] = useState(0);
@@ -204,4 +204,4 @@ function Grid({ gridSize }) {
     )
 }
 
-export default Grid;
+export default Game;
