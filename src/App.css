@@ -235,3 +235,54 @@ a:hover {
       font-size: 1rem;
   }
 }
+
+/*RULES*/
+
+.content {
+  max-width: 1200px;
+  padding: 4rem 2rem 2rem 2rem;
+  margin: 0 auto;
+}
+
+.languages {
+  height: 2rem;
+}
+
+.languages ul {
+  display: flex;
+}
+
+.languages li{
+  list-style-type: none;
+  padding-right: 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.languages li:hover::after, .languages .active::after{
+  content: '';
+  display: block;
+  width: 1.3rem;
+  height: 0.3rem;
+  border-radius: 10px;
+  margin-top: -2px;
+  margin-right: -2px;
+}
+
+.languages .active::after{
+  background-color: var(--base-color);
+}
+
+.languages li:hover::after{
+  background-color: var(--base-color);
+  opacity: 50%;
+}
+
+.rules h1 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.rules p{
+  margin-bottom: 1rem;
+}

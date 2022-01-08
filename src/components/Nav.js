@@ -1,11 +1,13 @@
+import { Link } from "react-router-dom";
+
 function Nav() {
     return (
         <div className="nav-bg">
             <nav>
                 <h1>Dots and Boxes</h1>
                 <ul>
-                    <li><a href="#">Play</a></li>
-                    <li><a href="#">Rules</a></li>
+                    <li><Link to="/">Play</Link></li>
+                    <li><Link to="/rules">Rules</Link></li>
                 </ul>
             </nav>
         </div>
