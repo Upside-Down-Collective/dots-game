@@ -95,8 +95,8 @@ function drawDots(gridSize) {
     for (let i = 0; i < gridSize + 1; i++) {
         for (let j = 0; j < gridSize + 1; j++) {
             circles.push((<div className="circle" style={{
-                top: `${gridSize * 2 * i + 2.5}rem`,
-                left: `${gridSize * 2 * j + 2.5}rem`
+                top: `${gridSize * 2 * i + 2.5}em`,
+                left: `${gridSize * 2 * j + 2.5}em`
             }} key={Math.random() * 10000}></div>))
         }
     }
@@ -121,8 +121,6 @@ function Grid({ gridSize }) {
     const [lineCount, setLineCount] = useState(0);
 
     useEffect(() => {
-        console.log(`player 1: ${points[0]} points, player 2: ${points[1]} points`)
-        console.log("player " + (turns % 2 + 1) + " turn");
         if (lineCount === gridSize * (gridSize + 1) + (gridSize + 1) * gridSize) {
             if (points[0] > points[1]) {
                 console.log("player 1 won!")
@@ -136,7 +134,7 @@ function Grid({ gridSize }) {
         }
     }, [lineCount])
 
-    // test with useCallback
+    // todo: test with useCallback?
     function handleClick(line) {
         if (line.isTaken === 0) {
             const tempLine = [...lines];
@@ -174,22 +172,22 @@ function Grid({ gridSize }) {
     }
 
     return (
-        <>
-            <div className="Grid">
+        <section className="Game">
+            <div className="game-grid">
                 {//draws boxes (squares)
                     boxes.map(box => (
                         <div className={`box ${box.color}`} key={Math.random() * 1000} style={{
-                            top: `${box.y * gridSize * 2 + gridSize / 2 + 0.375}rem`,
-                            left: `${box.x * gridSize * 2 + gridSize / 2 + 0.7}rem`
+                            top: `${box.y * gridSize * 2 + gridSize / 2 + 0.375}em`,
+                            left: `${box.x * gridSize * 2 + gridSize / 2 + 0.75}em`
                         }}></div>
                     ))
                 }
                 {//draws lines
                     lines.map(row => (row.map(line => (
                         < div className={`line ${line.isHorisontal ? "h-line" : "v-line"} ${line.colors[line.isTaken]}`} style={{
-                            top: `${gridSize * line.y + gridSize / 2 + 0.375}rem`,
-                            left: `${gridSize * 2 * line.x + gridSize / 2 + 0.7}rem`,
-                            width: `${gridSize * 2}rem`
+                            top: `${gridSize * line.y + gridSize / 2 + 0.375}em`,
+                            left: `${gridSize * 2 * line.x + gridSize / 2 + 0.75}em`,
+                            width: `${gridSize * 2}em`
                         }}
                             onClick={() => handleClick(line)}
                             key={Math.random() * 10000}></div>
@@ -197,8 +195,12 @@ function Grid({ gridSize }) {
                 }
                 {drawDots(gridSize)}
             </div >
-            <button onClick={restart}>restart</button> {/*this is a temporary thing*/}
-        </>
+            <div className="game-info">
+                <p className="p1-points"> <span className={`${turns % 2 === 0 ? "turn" : ""}`}>Player 1: </span> {points[0]} points</p>
+                <p className="p2-points"><span className={`${turns % 2 === 1 ? "turn" : ""}`}>Player 2: </span> {points[1]} points</p>
+                <button onClick={restart}>New Game</button>
+            </div>
+        </section>
     )
 }
 
