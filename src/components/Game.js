@@ -113,24 +113,30 @@ function makeBoxes(gridSize) {
     return boxes;
 }
 
+function whoWon(points) {
+    if (points[0] > points[1]) {
+        return "Player 1 won!"
+    }
+    else if (points[1] > points[0]) {
+        return "Player 2 won!"
+    }
+    else {
+        return "it's a draw."
+    }
+}
+
 function Game({ gridSize }) {
     const [lines, setLines] = useState(makeGrid(gridSize));
     const [boxes, setBoxes] = useState(makeBoxes(gridSize));
     const [turns, setTurns] = useState(0);
     const [points, setPoints] = useState([0, 0]);
     const [lineCount, setLineCount] = useState(0);
+    const [win, setWin] = useState(false);
 
     useEffect(() => {
         if (lineCount === gridSize * (gridSize + 1) + (gridSize + 1) * gridSize) {
-            if (points[0] > points[1]) {
-                console.log("player 1 won!")
-            }
-            else if (points[1] > points[0]) {
-                console.log("player 2 won!")
-            }
-            else {
-                console.log("it's a draw.")
-            }
+            whoWon(points);
+            setWin(true);
         }
     }, [lineCount])
 
@@ -168,7 +174,8 @@ function Game({ gridSize }) {
         setBoxes(makeBoxes(gridSize));
         setTurns(0);
         setPoints([0, 0]);
-        setLineCount(0)
+        setLineCount(0);
+        setWin(false);
     }
 
     return (
@@ -194,6 +201,9 @@ function Game({ gridSize }) {
                     ))))
                 }
                 {drawDots(gridSize)}
+                <div className={`win ${win ? "end" : ""}`}>
+                    <p>{whoWon(points)}</p>
+                </div>
             </div >
             <div className="game-info">
                 <p className="p1-points"> <span className={`${turns % 2 === 0 ? "turn" : ""}`}>Player 1: </span> {points[0]} points</p>
