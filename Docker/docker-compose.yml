@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  dots-game:
+    image: cimlah/dots-game
+    restart: unless-stopped
+    hostname: dots-game1
+    container_name: dots-game1
+    ports:
+      - "3000:3000"
+    tty: true
+    volumes:
+      - ./../.:/usr/src/app
+
+
+networks:
+  dots-game_network:
+    name: dots-game_network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        subnet: 172.21.1.0/24
+        gateway: 172.21.1.1
