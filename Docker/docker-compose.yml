@@ -9,18 +9,15 @@ services:
     ports:
       - "3000:3000"
     tty: true
-    volumes:
-      - ./../.:/usr/src/app
-    dots-game_network:
-      ipv4_address: 172.21.1.2
+    networks:
+      dots-game_network:
+        ipv4_address: 172.21.1.2
 
 
 networks:
   dots-game_network:
-    name: dots-game_network
     driver: bridge
     ipam:
       driver: default
       config:
-        subnet: 172.21.1.0/24
-        gateway: 172.21.1.1
+        - subnet: "172.21.1.0/24"
