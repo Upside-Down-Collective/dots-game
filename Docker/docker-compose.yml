@@ -11,6 +11,8 @@ services:
     tty: true
     volumes:
       - ./../.:/usr/src/app
+    dots-game_network:
+      ipv4_address: 172.21.1.2
 
 
 networks:
