@@ -6,6 +6,9 @@ services:
     restart: unless-stopped
     hostname: dots-game1
     container_name: dots-game1
+    volumes:
+      - ../.:/usr/src/app
+    command: bash -c 'npm install --silent && npm install react-scripts --silent && npm start'
     ports:
       - "3000:3000"
     tty: true
