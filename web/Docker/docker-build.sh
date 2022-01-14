@@ -1,3 +1,3 @@
 #! /bin/bash
 
-docker build -t cimlah/dots-game -f Docker/Dockerfile .
+docker build -t cimlah/dots-game:backend-test -f Docker/Dockerfile .
