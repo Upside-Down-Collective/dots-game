@@ -2,7 +2,6 @@ FROM node:16
 
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm install --silent
+RUN cd server && npm install && cd ../src && npm install
 COPY . .
-RUN npm run build --silent
 EXPOSE 3000
