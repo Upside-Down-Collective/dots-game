@@ -2,15 +2,16 @@ version: '3.3'
 
 services:
   dots-game:
-    image: cimlah/dots-game
+    image: cimlah/dots-game:backend-test
     restart: unless-stopped
-    hostname: dots-game1
-    container_name: dots-game1
+    hostname: dots-game_backend-test
+    container_name: dots-game_backend-test
     volumes:
-      - ../.:/usr/src/app
-    command: bash -c 'npm install && npm run build && npm start'
+      - ../../.:/usr/src/app
+    command: bash -c 'cd web && npm install && cd ../server && npm install && node index.js && cd ../web && npm start'
     ports:
       - "3000:3000"
+      - "5000:5000"
     tty: true
     networks:
       dots-game_network:
