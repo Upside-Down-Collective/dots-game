@@ -3,14 +3,12 @@ import { useState } from "react";
 function JoinRoom({ socket }) {
     const [roomCode, setRoomCode] = useState('');
     function joinRoom() {
-        console.log("join");
         socket.emit("joinRoom", roomCode)
         setRoomCode('');
     }
 
     function newRoom() {
         socket.emit("newRoom");
-        console.log("new")
     }
 
     return (

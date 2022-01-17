@@ -34,6 +34,8 @@ io.on('connection', (socket) => {
         socket.join(gameCode);
         socket.number = 2;
         socket.emit('init', 2, gameCode)
+
+        io.to(gameCode).emit('startGame');
     })
 
     socket.on('newRoom', () => {
@@ -46,10 +48,15 @@ io.on('connection', (socket) => {
         socket.emit('init', 1, roomName);
     })
 
+    socket.on("turn", (x, y, roomCode) => {
+        socket.to(roomCode).emit("opponent-move", x, y)
+    })
+
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
 });
+
 
 // io.of("/").adapter.on("join-room", (room, id) => {
 //     console.log(`socket ${id} has joined room ${room}`);

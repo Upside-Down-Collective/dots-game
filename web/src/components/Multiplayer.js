@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
+import GameMulti from "./GameMulti";
 import JoinRoom from "./JoinRoom";
 
 
@@ -21,14 +22,13 @@ function Multiplayer() {
         socket.on('init', (playerNum, roomName) => {
             setRoomCode(roomName);
             setPlayerNum(playerNum);
-            console.log({ playerNum, roomName })
         })
     }
 
     return (
         <>
             {!roomCode && (socket ? <JoinRoom socket={socket} setPlayerNum={setPlayerNum} setRoom={setRoomCode} /> : <p>Loading...</p>)}
-            {roomCode && <p>Your room code is: {roomCode}, player: {playerNum}</p>}
+            {roomCode && <GameMulti socket={socket} playerNum={playerNum} roomCode={roomCode} gridSize={4} />}
         </>
     )
 }
