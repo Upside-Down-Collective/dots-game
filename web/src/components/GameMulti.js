@@ -24,12 +24,12 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     useEffect(() => {
         // lineCount === total number of lines in the grid.
         if (lineCount === gridSize * (gridSize + 1) + (gridSize + 1) * gridSize) {
-            whoWon(points);
             setWin(true);
         }
     }, [lineCount])
 
     const updateGameValues = useCallback((x, y) => {
+        console.log("g", x, y, turn)
         const tempLine = [...lines];
         tempLine[y][x].isTaken = turn;
 
@@ -54,12 +54,11 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
             })
         }
         setLineCount(prev => prev + 1)
-        console.log({ turn })
     }, [gridSize, lines, turn])
 
-    // useEffect(() => { 
-    //     console.log("t", turn)
-    // }, [])
+    const listener = (x, y) => {
+        updateGameValues(x, y);
+    }
 
     useEffect(() => {
         socket.on("startGame", () => {
@@ -69,13 +68,14 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
             setWin(false);
         })
 
-        socket.on("opponent-move", (x, y) => {
-            updateGameValues(x, y);
-            console.log("move", x, y, turn)
-        })
+        socket.on("opponent-move", listener)
+
+        return () => {
+            socket.off("opponent-move", listener)
+        }
     }, [socket, updateGameValues])
 
-    function handleClick(line) {
+    const handleClick = (line) => {
         if (line.isTaken === 0 && turn === playerNum) {
             socket.emit("turn", line.x, line.y, roomCode);
             updateGameValues(line.x, line.y);
@@ -83,12 +83,12 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     }
 
     function restart() {
-        setLines(makeGrid(gridSize));
-        setBoxes(makeBoxes(gridSize));
-        setTurn(0);
-        setPoints([0, 0]);
-        setLineCount(0);
-        setWin(false);
+        // setLines(makeGrid(gridSize));
+        // setBoxes(makeBoxes(gridSize));
+        // setTurn(0);
+        // setPoints([0, 0]);
+        // setLineCount(0);
+        // setWin(false);
     }
 
     return (
