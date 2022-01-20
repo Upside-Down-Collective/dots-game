@@ -16,17 +16,17 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', (gameCode) => {
         const room = io.sockets.adapter.rooms.get(gameCode)
 
-        let numClients;
+        let numClients = 0;
         if (room) {
             numClients = room.size;
         }
 
         if (numClients === 0) {
-            console.log('unknown room', gameCode);
+            socket.emit("join-fail", "This room does not exist.")
             return;
         }
         else if (numClients > 1) {
-            console.log('too many players, ', numClients)
+            socket.emit("join-fail", "This room is already full.")
             return;
         }
 
@@ -58,9 +58,10 @@ io.on('connection', (socket) => {
 });
 
 
-// io.of("/").adapter.on("join-room", (room, id) => {
-//     console.log(`socket ${id} has joined room ${room}`);
-// });
+io.of("/").adapter.on("leave-room", (room, id) => {
+    io.in(room).emit("opponent-left");
+    io.in(room).socketsLeave(room);
+});
 
 function makeid(length) {
     let result = '';

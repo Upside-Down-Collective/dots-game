@@ -11,9 +11,11 @@ function App() {
       <div className="App">
         <Nav />
         <Routes>
-          <Route exact path="/" element={<Game gridSize={4} />} />
-          <Route exact path="/rules" element={<Rules />} />
-          <Route exact path="/multiplayer" element={<Multiplayer />} />
+          <Route path="/" element={<Game gridSize={4} />} />
+          <Route path="/rules" element={<Rules />} />
+          <Route path="/multiplayer" element={<Multiplayer />} />
+          {/* <Route path="play" element={<GameMulti />} /> */}
+          {/* </Route> */}
         </Routes>
       </div>
     </Router>

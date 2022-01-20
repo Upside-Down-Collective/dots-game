@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+// import { useOutletContext } from 'react-router-dom';
 import { makeGrid, makeBoxes, drawDots } from './utils';
 
 function whoWon(points) {
@@ -14,6 +15,7 @@ function whoWon(points) {
 }
 
 function GameMulti({ socket, playerNum, roomCode, gridSize }) {
+    // const { socket, playerNum, roomCode, gridSize } = useOutletContext();
     const [lines, setLines] = useState(makeGrid(gridSize));
     const [boxes, setBoxes] = useState(makeBoxes(gridSize));
     const [turn, setTurn] = useState(0);
@@ -26,10 +28,9 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
         if (lineCount === gridSize * (gridSize + 1) + (gridSize + 1) * gridSize) {
             setWin(true);
         }
-    }, [lineCount])
+    }, [lineCount, gridSize])
 
     const updateGameValues = useCallback((x, y) => {
-        console.log("g", x, y, turn)
         const tempLine = [...lines];
         tempLine[y][x].isTaken = turn;
 
@@ -56,10 +57,6 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
         setLineCount(prev => prev + 1)
     }, [gridSize, lines, turn])
 
-    const listener = (x, y) => {
-        updateGameValues(x, y);
-    }
-
     useEffect(() => {
         socket.on("startGame", () => {
             console.log("startgame")
@@ -68,10 +65,16 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
             setWin(false);
         })
 
-        socket.on("opponent-move", listener)
+        socket.on("opponent-move", (x, y) => {
+            updateGameValues(x, y);
+        })
+
+        socket.on("opponent-left", () => {
+            console.log("opponent left")
+        })
 
         return () => {
-            socket.off("opponent-move", listener)
+            socket.removeAllListeners();
         }
     }, [socket, updateGameValues])
 
