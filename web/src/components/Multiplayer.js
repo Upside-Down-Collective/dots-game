@@ -23,7 +23,6 @@ function Multiplayer() {
             setRoomCode(roomName);
             setPlayerNum(playerNum);
             // navigate('play');
-            console.log("init")
         })
         return () => s.disconnect();
     }, []);

@@ -1,16 +1,23 @@
 import { useEffect, useState, useCallback } from 'react';
 // import { useOutletContext } from 'react-router-dom';
 import { makeGrid, makeBoxes, drawDots } from './utils';
+import Notification from './Notification';
 
-function whoWon(points) {
+function whoWon(points, playerNum) {
     if (points[0] > points[1]) {
-        return "Player 1 won!"
+        if (playerNum === 1) {
+            return "You won!"
+        }
+        else return "You lost."
     }
     else if (points[1] > points[0]) {
-        return "Player 2 won!"
+        if (playerNum === 2) {
+            return "You won!"
+        }
+        else return "You lost."
     }
     else {
-        return "it's a draw."
+        return "It's a draw."
     }
 }
 
@@ -22,6 +29,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     const [points, setPoints] = useState([0, 0]);
     const [lineCount, setLineCount] = useState(0);
     const [win, setWin] = useState(false);
+    const [isNotif, setIsNotif] = useState(false);
 
     useEffect(() => {
         // lineCount === total number of lines in the grid.
@@ -57,13 +65,17 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
         setLineCount(prev => prev + 1)
     }, [gridSize, lines, turn])
 
+    const newGame = useCallback(() => {
+        console.log("startgame")
+        setLines(makeGrid(gridSize));
+        setBoxes(makeBoxes(gridSize))
+        setTurn(1);
+        setLineCount(0);
+        setWin(false);
+    }, [gridSize])
+
     useEffect(() => {
-        socket.on("startGame", () => {
-            console.log("startgame")
-            setTurn(1);
-            setLineCount(0);
-            setWin(false);
-        })
+        socket.on("start-game", newGame)
 
         socket.on("opponent-move", (x, y) => {
             updateGameValues(x, y);
@@ -71,12 +83,17 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
 
         socket.on("opponent-left", () => {
             console.log("opponent left")
+            setIsNotif(true);
+        })
+
+        socket.on("restart-game-ready", () => {
+            console.log("restart game?")
         })
 
         return () => {
             socket.removeAllListeners();
         }
-    }, [socket, updateGameValues])
+    }, [socket, updateGameValues, newGame])
 
     const handleClick = (line) => {
         if (line.isTaken === 0 && turn === playerNum) {
@@ -86,16 +103,12 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     }
 
     function restart() {
-        // setLines(makeGrid(gridSize));
-        // setBoxes(makeBoxes(gridSize));
-        // setTurn(0);
-        // setPoints([0, 0]);
-        // setLineCount(0);
-        // setWin(false);
+        socket.emit("restart-game", roomCode)
     }
 
     return (
         <section className="Game">
+            {isNotif && <Notification msg="Opponent left the game." duration={2500} />}
             {lines && <div className="game-grid">
                 {//draws boxes (squares)
                     boxes.map(box => (
@@ -124,7 +137,6 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
             }
             <div className="game-info">
                 {turn === 0 && <p>Your room code: {roomCode}, <br />waiting for the opponent to join</p>}
-
                 <p className="p1-points"> <span className={`${turn === 1 ? "turn" : ""}`}> {playerNum === 1 ? "You:" : "Opponent:"} </span> {points[0]} points</p>
                 <p className="p2-points"><span className={`${turn === 2 ? "turn" : ""}`}>{playerNum === 2 ? "You:" : "Opponent:"} </span> {points[1]} points</p>
                 <button onClick={restart}>New Game</button>

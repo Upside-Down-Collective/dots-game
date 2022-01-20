@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
         socket.number = 2;
         socket.emit('init', 2, gameCode)
 
-        io.to(gameCode).emit('startGame');
+        io.to(gameCode).emit('start-game');
     })
 
     socket.on('newRoom', () => {
@@ -50,6 +50,10 @@ io.on('connection', (socket) => {
 
     socket.on("turn", (x, y, roomCode) => {
         socket.to(roomCode).emit("opponent-move", x, y)
+    })
+
+    socket.on("restart-game", (roomCode) => {
+        socket.to(roomCode).emit("restart-game-ready")
     })
 
     socket.on('disconnect', () => {
