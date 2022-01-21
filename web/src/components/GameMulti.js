@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 // import { useOutletContext } from 'react-router-dom';
 import { makeGrid, makeBoxes, drawDots } from './utils';
 import Notification from './Notification';
+import Alert from './Alert';
 
 function whoWon(points, playerNum) {
     if (points[0] > points[1]) {
@@ -30,6 +31,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     const [lineCount, setLineCount] = useState(0);
     const [win, setWin] = useState(false);
     const [isNotif, setIsNotif] = useState(false);
+    const [isAlert, setisAlert] = useState(false)
 
     useEffect(() => {
         // lineCount === total number of lines in the grid.
@@ -86,8 +88,17 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
             setIsNotif(true);
         })
 
-        socket.on("restart-game-ready", () => {
-            console.log("restart game?")
+        socket.on("restart-game-request", () => {
+            setisAlert(true);
+        })
+
+        socket.on("restart-game-ready", isReady => {
+            if (isReady) {
+                newGame();
+            }
+            else {
+                //notification: new game denied;
+            }
         })
 
         return () => {
@@ -104,44 +115,59 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
 
     function restart() {
         socket.emit("restart-game", roomCode)
+        //todo: some kind of notification "waiting for the responce"
+    }
+
+    const handleClickNo = () => {
+        socket.emit("restart-game-responce", false, roomCode)
+        setisAlert(false);
+    }
+
+    const handleClickYes = () => {
+        socket.emit("restart-game-responce", true, roomCode)
+        setisAlert(false);
+        newGame();
     }
 
     return (
-        <section className="Game">
-            {isNotif && <Notification msg="Opponent left the game." duration={2500} />}
-            {lines && <div className="game-grid">
-                {//draws boxes (squares)
-                    boxes.map(box => (
-                        <div className={`box ${box.color}`} key={Math.random() * 1000} style={{
-                            top: `${box.y * gridSize * 2 + gridSize / 2 + 0.375}em`,
-                            left: `${box.x * gridSize * 2 + gridSize / 2 + 0.75}em`
-                        }}></div>
-                    ))
+        <>
+            {isAlert && <Alert handleClickNo={handleClickNo} handleClickYes={handleClickYes} />}
+            <section className="Game">
+                {isNotif && <Notification msg="Opponent left the game." duration={2500} />}
+                {lines && <div className="game-grid">
+                    {//draws boxes (squares)
+                        boxes.map(box => (
+                            <div className={`box ${box.color}`} key={Math.random() * 1000} style={{
+                                top: `${box.y * gridSize * 2 + gridSize / 2 + 0.375}em`,
+                                left: `${box.x * gridSize * 2 + gridSize / 2 + 0.75}em`
+                            }}></div>
+                        ))
+                    }
+                    {//draws lines
+                        lines.map(row => (row.map(line => (
+                            < div className={`line ${line.isHorisontal ? "h-line" : "v-line"} ${line.colors[line.isTaken]}`} style={{
+                                top: `${gridSize * line.y + gridSize / 2 + 0.375}em`,
+                                left: `${gridSize * 2 * line.x + gridSize / 2 + 0.75}em`,
+                                width: `${gridSize * 2}em`
+                            }}
+                                onClick={() => handleClick(line)}
+                                key={Math.random() * 10000}></div>
+                        ))))
+                    }
+                    {drawDots(gridSize)}
+                    <div className={`win ${win ? "end" : ""}`}>
+                        <p>{whoWon(points)}</p>
+                    </div>
+                </div >
                 }
-                {//draws lines
-                    lines.map(row => (row.map(line => (
-                        < div className={`line ${line.isHorisontal ? "h-line" : "v-line"} ${line.colors[line.isTaken]}`} style={{
-                            top: `${gridSize * line.y + gridSize / 2 + 0.375}em`,
-                            left: `${gridSize * 2 * line.x + gridSize / 2 + 0.75}em`,
-                            width: `${gridSize * 2}em`
-                        }}
-                            onClick={() => handleClick(line)}
-                            key={Math.random() * 10000}></div>
-                    ))))
-                }
-                {drawDots(gridSize)}
-                <div className={`win ${win ? "end" : ""}`}>
-                    <p>{whoWon(points)}</p>
+                <div className="game-info">
+                    {turn === 0 && <p>Your room code: {roomCode}, <br />waiting for the opponent to join</p>}
+                    <p className="p1-points"> <span className={`${turn === 1 ? "turn" : ""}`}> {playerNum === 1 ? "You:" : "Opponent:"} </span> {points[0]} points</p>
+                    <p className="p2-points"><span className={`${turn === 2 ? "turn" : ""}`}>{playerNum === 2 ? "You:" : "Opponent:"} </span> {points[1]} points</p>
+                    <button onClick={restart}>New Game</button>
                 </div>
-            </div >
-            }
-            <div className="game-info">
-                {turn === 0 && <p>Your room code: {roomCode}, <br />waiting for the opponent to join</p>}
-                <p className="p1-points"> <span className={`${turn === 1 ? "turn" : ""}`}> {playerNum === 1 ? "You:" : "Opponent:"} </span> {points[0]} points</p>
-                <p className="p2-points"><span className={`${turn === 2 ? "turn" : ""}`}>{playerNum === 2 ? "You:" : "Opponent:"} </span> {points[1]} points</p>
-                <button onClick={restart}>New Game</button>
-            </div>
-        </section>
+            </section>
+        </>
     )
 }
 

@@ -53,7 +53,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on("restart-game", (roomCode) => {
-        socket.to(roomCode).emit("restart-game-ready")
+        socket.to(roomCode).emit("restart-game-request")
+    })
+
+    socket.on("restart-game-responce", (isReady, roomCode) => {
+        socket.to(roomCode).emit("restart-game-ready", isReady)
     })
 
     socket.on('disconnect', () => {
