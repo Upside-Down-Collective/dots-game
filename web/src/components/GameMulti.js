@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from 'react';
-// import { useOutletContext } from 'react-router-dom';
 import { makeGrid, makeBoxes, drawDots } from './utils';
 import Notification from './Notification';
 import Alert from './Alert';
@@ -23,7 +22,6 @@ function whoWon(points, playerNum) {
 }
 
 function GameMulti({ socket, playerNum, roomCode, gridSize }) {
-    // const { socket, playerNum, roomCode, gridSize } = useOutletContext();
     const [lines, setLines] = useState(makeGrid(gridSize));
     const [boxes, setBoxes] = useState(makeBoxes(gridSize));
     const [turn, setTurn] = useState(0);

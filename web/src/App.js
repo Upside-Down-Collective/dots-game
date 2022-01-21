@@ -14,8 +14,6 @@ function App() {
           <Route path="/" element={<Game gridSize={4} />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/multiplayer" element={<Multiplayer />} />
-          {/* <Route path="play" element={<GameMulti />} /> */}
-          {/* </Route> */}
         </Routes>
       </div>
     </Router>
