@@ -154,7 +154,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
                     }
                     {drawDots(gridSize)}
                     <div className={`win ${win ? "end" : ""}`}>
-                        <p>{whoWon(points)}</p>
+                        <p>{whoWon(points, playerNum)}</p>
                     </div>
                 </div >
                 }

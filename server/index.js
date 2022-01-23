@@ -3,7 +3,7 @@ const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: ["http://localhost:3000"]
+        origin: ["http://localhost:3000"] // If you want to access multiplayer server from another device, you need to also add IP address of server, so this line should look somewhat like this: 'origin: ["http://localhost:3000", http://192.168.0.1:3000]'. Of course server's IP address may be different, so write the one of your server.
     }
 });
 
