@@ -10,9 +10,14 @@ const Notification = ({ msg, duration }) => {
         return () => clearTimeout(timer);
     }, [duration]);
 
+    const closeNotif = () => {
+        setActive(false);
+    }
+
     return (
         <div className={`${styles.notif} ${active && styles.active}`}>
             <p>{msg}</p >
+            <span onClick={closeNotif}>&#10799;</span>
         </div >
     );
 }

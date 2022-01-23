@@ -12,9 +12,17 @@
   font-size: 1.5rem;
   z-index: 10 !important;
   display: grid;
+  grid-template-columns: 1fr 4rem;
   place-items: center;
+  text-align: center;
+}
+
+.notif span {
+  font-size: 1.6rem;
+  font-weight: 900;
+  cursor: pointer;
 }
 
 .active {
-    height: 6rem;
+  height: 6rem;
 }

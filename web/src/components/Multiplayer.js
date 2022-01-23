@@ -14,6 +14,7 @@ function Multiplayer() {
     useEffect(() => {
         setPlayerNum(null)
         setRoomCode(null)
+        setSocket(null)
 
         const s = io(`http://${window.location.hostname}:5000`)
         s.on('connect', () => {
