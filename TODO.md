@@ -11,10 +11,11 @@
 - [ ] Red background when user loses?
 - [ ] Join room page on mobile
 - [ ] Smaller font on mobile (endgame alert)
-- [ ] Style loading 
+- [ ] Style loading
+- [ ] Animation on oponent move, where it occurs
 
 ## Server
-- [ ] figure out build.
+- [X] figure out build.
 
 ### Links that might be useful
 - [server side vs client side routing](https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually)
