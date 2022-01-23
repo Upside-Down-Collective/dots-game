@@ -1,4 +1,4 @@
 #! /bin/bash
 
-cd web && npm install && cd ../server && npm install
-node index.js & cd ../web && npm start
+cd server && npm install && cd ../web && npm install && npm run build && cd ../server
+PORT=5001 node index.js
