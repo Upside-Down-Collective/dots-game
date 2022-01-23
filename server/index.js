@@ -1,14 +1,18 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
+const path = require('path');
 const http = require('http');
 const server = http.createServer(app);
-const io = require('socket.io')(server, {
-    cors: {
-        origin: ["http://localhost:3000"] // If you want to access multiplayer server from another device, you need to also add IP address of server, so this line should look somewhat like this: 'origin: ["http://localhost:3000", http://192.168.0.1:3000]'. Of course server's IP address may be different, so write the one of your server.
-    }
-});
+const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 5000;
 const clientRooms = {};
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 io.on('connection', (socket) => {
     console.log('a user connected with id: ', socket.id);
