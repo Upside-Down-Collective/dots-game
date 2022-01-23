@@ -6,6 +6,7 @@ function Nav() {
             <nav>
                 <h1>Dots and Boxes</h1>
                 <ul>
+                    <li><Link to="/multiplayer">Multiplayer</Link></li>
                     <li><Link to="/">Play</Link></li>
                     <li><Link to="/rules">Rules</Link></li>
                 </ul>

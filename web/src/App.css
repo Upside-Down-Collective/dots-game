@@ -53,6 +53,32 @@ a:hover {
   text-decoration: underline;
 }
 
+/* MULTIPLAYER, JOIN ROOM */
+
+.JoinRoom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.JoinRoom button{
+  width: 100%;
+}
+
+.JoinRoom input{
+  width: 15rem;
+  font-size: 1rem;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border-color: gray;
+}
+
+
 /* GAME SECTION */
 
 .Game{
@@ -98,7 +124,7 @@ a:hover {
   background-color: var(--p2-primary);
 }
 
-.game-info button{
+button {
   padding: .5em 3em;
   font-size: 1.5rem;
   margin: 3rem auto;
@@ -116,12 +142,12 @@ a:hover {
   box-shadow: 0px 8px 15px rgb(0 0 0 / 10%);
 }
 
-.game-info button:hover{
+button:hover{
   cursor: pointer;
   background-position: 100%;
 }
 
-.game-info button:active {
+button:active {
   box-shadow:
     7px 6px 28px 1px rgba(0, 0, 0, 0.2);
   transform: translateY(4px);
