@@ -1,27 +1,27 @@
 version: '3.3'
 
 services:
-  dots-game_backend-test:
-    image: cimlah/dots-game:backend-test
+  dots-game:
+    image: cimlah/dots-game:latest
     restart: unless-stopped
-    hostname: dots-game_backend-test
-    container_name: dots-game_backend-test
+    hostname: dots-game1
+    container_name: dots-game1
+    command: bash -c 'web/Docker/app-start.sh'
     volumes:
       - ../../.:/usr/src/app
-    command: bash -c 'web/Docker/app-start.sh'
+    
     ports:
-      - "3001:3000"
-      - "5001:5000"
+      - "5001:5001"
     tty: true
     networks:
-      dots-game_backend-test_network:
-        ipv4_address: 172.21.2.2
+      dots-game_network:
+        ipv4_address: 172.21.1.2
 
 
 networks:
-  dots-game_backend-test_network:
+  dots-game_network:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: "172.21.2.0/24"
+        - subnet: "172.21.1.0/24"
