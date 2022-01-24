@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useReducer } from 'react';
 import { makeGrid, makeBoxes, drawDots } from './utils';
 import Notification from './Notification';
 import Alert from './Alert';
@@ -21,6 +21,33 @@ function whoWon(points, playerNum) {
     }
 }
 
+const ACTIONS = {
+    USER_LEFT: 'user-left',
+    WAITING_FOR_RESPONCE: 'waiting-for-responce',
+    NEW_GAME_DENIED: 'new-game-denied',
+}
+
+function reducer(state, action) {
+    let temp;
+    switch (action.type) {
+        case ACTIONS.USER_LEFT:
+            temp = { ...state };
+            temp.userLeft.isActive = action.active;
+            return temp
+        case ACTIONS.WAITING_FOR_RESPONCE:
+            console.log("wres")
+            temp = { ...state };
+            temp.waitingForResponce.isActive = action.active;
+            return temp
+        case ACTIONS.NEW_GAME_DENIED:
+            temp = { ...state };
+            temp.newGameDenied.isActive = action.active;
+            return temp
+        default:
+            return state
+    }
+}
+
 function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     const [lines, setLines] = useState(makeGrid(gridSize));
     const [boxes, setBoxes] = useState(makeBoxes(gridSize));
@@ -28,8 +55,23 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     const [points, setPoints] = useState([0, 0]);
     const [lineCount, setLineCount] = useState(0);
     const [win, setWin] = useState(false);
-    const [isNotif, setIsNotif] = useState(false);
     const [isAlert, setisAlert] = useState(false)
+
+    const initialState = {
+        userLeft: {
+            isActive: false,
+            msg: "Opponent left the game."
+        },
+        waitingForResponce: {
+            isActive: false,
+            msg: "Waiting for the opponent's responce."
+        },
+        newGameDenied: {
+            isActive: false,
+            msg: "Your opponent doesn't want to restart the game."
+        }
+    }
+    const [notifications, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
         // lineCount === total number of lines in the grid.
@@ -83,7 +125,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
 
         socket.on("opponent-left", () => {
             console.log("opponent left")
-            setIsNotif(true);
+            dispatch({ type: ACTIONS.USER_LEFT, active: true })
         })
 
         socket.on("restart-game-request", () => {
@@ -95,7 +137,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
                 newGame();
             }
             else {
-                //notification: new game denied;
+                dispatch({ type: ACTIONS.NEW_GAME_DENIED, active: true })
             }
         })
 
@@ -113,7 +155,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
 
     function restart() {
         socket.emit("restart-game", roomCode)
-        //todo: some kind of notification "waiting for the responce"
+        dispatch({ type: ACTIONS.WAITING_FOR_RESPONCE, active: true })
     }
 
     const handleClickNo = () => {
@@ -131,7 +173,23 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
         <>
             {isAlert && <Alert handleClickNo={handleClickNo} handleClickYes={handleClickYes} />}
             <section className="Game">
-                {isNotif && <Notification msg="Opponent left the game." duration={2500} />}
+
+                <Notification
+                    msg={notifications.waitingForResponce.msg}
+                    active={notifications.waitingForResponce.isActive}
+                    dispatch={dispatch}
+                    action={ACTIONS.WAITING_FOR_RESPONCE} />
+                <Notification
+                    msg={notifications.newGameDenied.msg}
+                    active={notifications.newGameDenied.isActive}
+                    dispatch={dispatch}
+                    action={ACTIONS.NEW_GAME_DENIED} />
+                <Notification
+                    msg={notifications.userLeft.msg}
+                    active={notifications.userLeft.isActive}
+                    dispatch={dispatch}
+                    action={ACTIONS.USER_LEFT} />
+
                 {lines && <div className="game-grid">
                     {//draws boxes (squares)
                         boxes.map(box => (
@@ -153,6 +211,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
                         ))))
                     }
                     {drawDots(gridSize)}
+
                     <div className={`win ${win ? "end" : ""}`}>
                         <p>{whoWon(points, playerNum)}</p>
                     </div>
