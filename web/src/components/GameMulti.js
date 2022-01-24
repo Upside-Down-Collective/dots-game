@@ -35,7 +35,6 @@ function reducer(state, action) {
             temp.userLeft.isActive = action.active;
             return temp
         case ACTIONS.WAITING_FOR_RESPONCE:
-            console.log("wres")
             temp = { ...state };
             temp.waitingForResponce.isActive = action.active;
             return temp
@@ -108,7 +107,6 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     }, [gridSize, lines, turn])
 
     const newGame = useCallback(() => {
-        console.log("startgame")
         setLines(makeGrid(gridSize));
         setBoxes(makeBoxes(gridSize))
         setTurn(1);
@@ -124,7 +122,6 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
         })
 
         socket.on("opponent-left", () => {
-            console.log("opponent left")
             dispatch({ type: ACTIONS.USER_LEFT, active: true })
         })
 

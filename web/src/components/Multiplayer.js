@@ -18,7 +18,6 @@ function Multiplayer() {
 
         const s = io(`http://${window.location.hostname}:5000`)
         s.on('connect', () => {
-            console.log(`your id: ${s.id}`)
             setSocket(s);
         })
 

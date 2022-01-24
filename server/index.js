@@ -8,11 +8,8 @@ const io = require('socket.io')(server, {
 });
 
 const PORT = process.env.PORT || 5000;
-const clientRooms = {};
 
 io.on('connection', (socket) => {
-    console.log('a user connected with id: ', socket.id);
-
     socket.on('joinRoom', (gameCode) => {
         const room = io.sockets.adapter.rooms.get(gameCode)
 
@@ -30,7 +27,6 @@ io.on('connection', (socket) => {
             return;
         }
 
-        clientRooms[socket.id] = gameCode;
         socket.join(gameCode);
         socket.number = 2;
         socket.emit('init', 2, gameCode)
@@ -40,7 +36,6 @@ io.on('connection', (socket) => {
 
     socket.on('newRoom', () => {
         let roomName = makeid(5);
-        clientRooms[socket.id] = roomName;
         socket.emit('gameCode', roomName);
 
         socket.join(roomName)
@@ -59,10 +54,6 @@ io.on('connection', (socket) => {
     socket.on("restart-game-responce", (isReady, roomCode) => {
         socket.to(roomCode).emit("restart-game-ready", isReady)
     })
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
 });
 
 
