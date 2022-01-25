@@ -8,7 +8,8 @@
 
 ## Styles
 - [ ] Style room code, margin on new game button looks weird because of that
-- [ ] Responsive navbar
+- [X] Responsive navbar
+- [ ] Add animations to nav
 - [ ] Red background when user loses?
 - [ ] Join room page on mobile
 - [ ] Smaller font on mobile (endgame alert)

@@ -5,7 +5,7 @@
   --p2-primary: #106D94;
   --p2-secondary: #9FCDE0;
   --base-color: #fdbf68;
-  --text-color: #1d1d1d;
+  --text-color: #1d1d1d; 
 }
 
 * {
@@ -22,26 +22,42 @@
 
 nav{
   max-width: 1200px;
-  padding: 2rem;
+  height: 5rem;
+  padding: 1.5rem 2rem;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: var(--text-color);
+  font-size: 1.3rem;
+}
+
+nav .active {
+  text-decoration: underline;
+}
+
+nav .logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 2.5rem;
+  margin: 0 1rem 0 0;
 }
 
 nav h1{
   text-transform: uppercase;
+  font-size: 1.3rem;
 }
 
-nav ul {
+.nav-links {
   display: flex;
 }
 
-nav li {
+.nav-links li {
   list-style-type: none;
-  padding-left: 5rem;
-  font-size: 1.5rem;
+  padding-left: 4rem;
 }
 
 nav a{
@@ -51,6 +67,69 @@ nav a{
 
 a:hover {
   text-decoration: underline;
+}
+
+.burger {
+  cursor: pointer;
+  display: none;
+}
+
+.burger div{
+  width: 30px;
+  height: 4px;
+  background-color: var(--text-color);
+}
+
+.burger div:not(:last-child){
+  margin-bottom: 5px;
+}
+
+.nav-links.nav-active {
+  transform: translateX(0%);
+}
+
+@media screen and (max-width: 700px) {
+  body{
+    overflow-x: hidden;
+  }
+
+  .burger {
+    display: block;
+  }
+
+  .nav-links{
+    position: absolute;
+    right: 0;
+    top: 5rem;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--base-color);
+    padding: 2rem;
+    z-index: 10;
+    min-width: 50vw;
+    height: calc(100vh - 5rem);
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in;
+    /* animation: navLinks 0.5s ease forwards; */
+  }
+
+  .nav-links li{
+    padding: 0;
+    margin: 3rem;
+    /* opacity: 0; */
+  }
+}
+
+@keyframes navLinksFade {
+  from{
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to{
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  
 }
 
 /* MULTIPLAYER, JOIN ROOM */
@@ -246,10 +325,6 @@ button:active {
   .game-grid{
     font-size: 11px;
   }
-
-  nav li{
-    padding-left: 2rem;
-  }
 }
 
 @media (max-width: 470px) {
@@ -305,7 +380,7 @@ button:active {
 }
 
 .rules h1 {
-  margin-bottom: 2rem;
+  margin: 2rem 0;
   text-align: center;
 }
 
