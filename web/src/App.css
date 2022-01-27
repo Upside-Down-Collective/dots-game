@@ -78,6 +78,7 @@ a:hover {
   width: 30px;
   height: 4px;
   background-color: var(--text-color);
+  transition: all 0.3s ease;
 }
 
 .burger div:not(:last-child){
@@ -88,13 +89,28 @@ a:hover {
   transform: translateX(0%);
 }
 
-@media screen and (max-width: 700px) {
-  body{
-    overflow-x: hidden;
-  }
+.burger.close .burger-a {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
 
-  .burger {
-    display: block;
+.burger.close .burger-b{
+  opacity: 0;
+}
+
+.burger.close .burger-c{
+  transform: rotate(45deg) translate(-6px, -7px);
+}
+
+.resize-animation-stopper * {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media screen and (max-width: 760px) {
+  #root{
+    overflow-x: hidden !important;
+    position: relative;
+    min-height: 100vh;
   }
 
   .nav-links{
@@ -103,33 +119,23 @@ a:hover {
     top: 5rem;
     flex-direction: column;
     align-items: center;
-    background-color: var(--base-color);
     padding: 2rem;
-    z-index: 10;
-    min-width: 50vw;
+    min-width: 50%;
     height: calc(100vh - 5rem);
+    background-color: var(--base-color);
+    z-index: 10;
     transform: translateX(100%);
-    transition: transform 0.5s ease-in;
-    /* animation: navLinks 0.5s ease forwards; */
+    transition: transform 0.4s ease-in;
   }
-
+  
   .nav-links li{
     padding: 0;
     margin: 3rem;
-    /* opacity: 0; */
-  }
-}
-
-@keyframes navLinksFade {
-  from{
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to{
-    opacity: 1;
-    transform: translateX(0px);
   }
   
+  .burger {
+    display: block;
+  }
 }
 
 /* MULTIPLAYER, JOIN ROOM */
@@ -314,25 +320,25 @@ button:active {
   transform: rotate(90deg) translateY(calc(var(--gameColumns) * 1em));
 }
 
-@media (max-width: 940px) {
+@media screen and (max-width: 940px) {
   .Game{
     flex-direction: column;
     align-items: center;
   }
 }
 
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .game-grid{
     font-size: 11px;
   }
 }
 
-@media (max-width: 470px) {
+@media screen and (max-width: 470px) {
   .game-grid{
     font-size: 7px;
   }
 
-  nav h1, nav li{
+  nav h1{
       font-size: 1rem;
   }
 }
