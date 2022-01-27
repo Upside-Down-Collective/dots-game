@@ -17,7 +17,7 @@
 - [ ] Animation on oponent move, where it occurs
 
 ## Other 
-- [ ] Add a not found page
+- [X] Add a not found page
 
 ## Server
 - [X] figure out build.
