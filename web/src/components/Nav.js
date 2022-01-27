@@ -33,10 +33,10 @@ function Nav() {
                     <img src={logo} alt="logo" />
                     <h1>Dots and Boxes</h1>
                 </div>
-                <ul className={`${navActive ? "nav-active" : ""} nav-links`} onClick={toggleNav}>
-                    <li><NavLink to="/multiplayer">Multiplayer</NavLink></li>
-                    <li><NavLink to="/">Play offline</NavLink></li>
-                    <li><NavLink to="/rules">Rules</NavLink></li>
+                <ul className={`${navActive ? "nav-active" : ""} nav-links`}>
+                    <li><NavLink to="/multiplayer" onClick={toggleNav}>Multiplayer</NavLink></li>
+                    <li><NavLink to="/" onClick={toggleNav}>Play offline</NavLink></li>
+                    <li><NavLink to="/rules" onClick={toggleNav}>Rules</NavLink></li>
                 </ul>
                 <div className={`${toggleBurger ? "close" : ""} burger`} onClick={toggleNav}>
                     <div className="burger-a"></div>
