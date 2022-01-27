@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 import GameMulti from "./GameMulti";
 import JoinRoom from "./JoinRoom";
+import Loader from "./Loader";
 
 
 function Multiplayer() {
@@ -30,7 +31,7 @@ function Multiplayer() {
 
     return (
         <>
-            {!roomCode && (socket ? <JoinRoom socket={socket} setPlayerNum={setPlayerNum} setRoom={setRoomCode} /> : <p>Loading...</p>)}
+            {!roomCode && (socket ? <JoinRoom socket={socket} setPlayerNum={setPlayerNum} setRoom={setRoomCode} /> : <Loader />)}
             {roomCode && <GameMulti socket={socket} playerNum={playerNum} roomCode={roomCode} gridSize={4} />}
         </>
     )

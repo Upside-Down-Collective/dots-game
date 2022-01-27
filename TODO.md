@@ -13,7 +13,7 @@
 - [ ] Red background when user loses?
 - [ ] Join room page on mobile
 - [ ] Smaller font on mobile (endgame alert)
-- [ ] Style loading
+- [X] Style loading
 - [ ] Animation on oponent move, where it occurs
 
 ## Other 
