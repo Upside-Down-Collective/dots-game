@@ -40,14 +40,14 @@ and execute command: `docker-compose up -d`.
 
 
 ### Dockerfile
-Docker image is based on [Node version 16](https://hub.docker.com/_/node). It contains of instructions to copy all of project's files into work directory (except those excluded in .dockerignore). At the end, dependencies are installed using `npm install`.
+This Docker image is based on [Node version 16](https://hub.docker.com/_/node). It contains of instructions to copy all of project's files into the work directory (except those excluded in `.dockerignore`). At the end, all dependencies are installed using `npm install`.
 
 
 ### docker-compose.yml
-Version 3.3 is used for the compose file. Most of the container's behaviour is set in `docker-compose.yml` intead of `Dockerfile` in favour of customasibility, although there are some things worth keeping in mind:
-* Only host port, not container port should be changed. It could be for example: `- "4200:5001"` or `- "2137:5001"`, but not `- "5001:5004"`, because server in NodeJS runs on port 5001. **But it can be changed too, if you know how to.**
-* If virtual network (or IP address assigned to container) created by `docker-compose.yml` is already present on your computer, then you can adjust subnet, for example istead of `- subnet: "172.21.1.0/24"` it could be `- subnet: "172.21.3.0/24"`.  
-You can also make this container use *dynamic IP address*, just delete these lines:
+*Version 3.3* is used for the compose file. Most of the container's behaviour is set in `docker-compose.yml` intead of `Dockerfile` in favour of customasibility, although there are some things worth keeping in mind:
+* Only host port, not container port should be changed. It could be for example: `"4200:5001"` or `"2137:5001"`, but not `"5001:5004"`, because server in *NodeJS* runs on port `5001`. **But it can be changed too, if you know how to.**
+* If virtual network (or an IP address assigned to container) created by `docker-compose.yml` is already present on your computer, then you can adjust subnet, for example istead of `subnet: "172.21.1.0/24"` it could be `subnet: "172.21.3.0/24"`.  
+You can also make this container use a *dynamic IP address*, just delete these lines:
 ``` yml
 networks:
       dots-game_network:
@@ -74,10 +74,10 @@ This is a bash script, which is used for executing commands on container start.
 
 
 ### docker-build.sh
-This is a bash script, which is used to build Docker image. Also, there is symlink located in root directory of the repository. Intended action to build image is to execute mentioned symlink.
+This is a bash script, which is used to build a Docker image. Also, there is a symlink located in the root directory of the repository. An intended action to build an image is to execute mentioned symlink.
 
 
 ## HAProxy - load balancing
-In root directory of the repository is a directory named `HAProxy`, which contains example `haproxy.cfg`.  
+In the root directory of the repository is a directory named `HAProxy`, which contains an example `haproxy.cfg`.  
 If you wish to asign a domain name or a subdomain to server hosted by You, this file and generally speaking load balancing comes in handy.  
-Setting static IP address for Docker container running this project is main reason for simple setup of HAProxy and assigning subdomain.
+Setting a static IP address for Docker container running this app is the main reason for simple setup of HAProxy and assigning a subdomain.
