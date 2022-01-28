@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../logo/dots-and-boxes_2.jpg"
 
 function Nav() {
     const [navActive, setnavActive] = useState(false);
@@ -30,7 +29,6 @@ function Nav() {
         <div className="nav-bg">
             <nav className={isResizing ? "resize-animation-stopper" : ""}>
                 <div className="logo">
-                    <img src={logo} alt="logo" />
                     <h1>Dots and Boxes</h1>
                 </div>
                 <ul className={`${navActive ? "nav-active" : ""} nav-links`}>
