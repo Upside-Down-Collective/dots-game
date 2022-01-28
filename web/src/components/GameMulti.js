@@ -6,18 +6,18 @@ import Alert from './Alert';
 function whoWon(points, playerNum) {
     if (points[0] > points[1]) {
         if (playerNum === 1) {
-            return "You won!"
+            return { msg: "You won!", isLost: false }
         }
-        else return "You lost."
+        else return { msg: "You lost.", isLost: true }
     }
     else if (points[1] > points[0]) {
         if (playerNum === 2) {
-            return "You won!"
+            return { msg: "You won!", isLost: false }
         }
-        else return "You lost."
+        else return { msg: "You lost.", isLost: true }
     }
     else {
-        return "It's a draw."
+        return { msg: "It's a draw.", isLost: false }
     }
 }
 
@@ -53,7 +53,11 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     const [turn, setTurn] = useState(0);
     const [points, setPoints] = useState([0, 0]);
     const [lineCount, setLineCount] = useState(0);
-    const [win, setWin] = useState(false);
+    const [endGame, setEndGame] = useState({
+        isEnd: false,
+        msg: "",
+        isLost: false
+    });
     const [isAlert, setisAlert] = useState(false)
 
     const initialState = {
@@ -75,9 +79,14 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
     useEffect(() => {
         // lineCount === total number of lines in the grid.
         if (lineCount === gridSize * (gridSize + 1) + (gridSize + 1) * gridSize) {
-            setWin(true);
+            let end = whoWon(points, playerNum);
+            setEndGame({
+                isEnd: true,
+                msg: end.msg,
+                isLost: end.isLost
+            });
         }
-    }, [lineCount, gridSize])
+    }, [lineCount, gridSize, points, playerNum])
 
     const updateGameValues = useCallback((x, y) => {
         const tempLine = [...lines];
@@ -111,7 +120,11 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
         setBoxes(makeBoxes(gridSize))
         setTurn(1);
         setLineCount(0);
-        setWin(false);
+        setEndGame({
+            isEnd: false,
+            msg: "",
+            isLost: false
+        });
     }, [gridSize])
 
     useEffect(() => {
@@ -208,9 +221,8 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
                         ))))
                     }
                     {drawDots(gridSize)}
-
-                    <div className={`win ${win ? "end" : ""}`}>
-                        <p>{whoWon(points, playerNum)}</p>
+                    <div className={`win ${endGame.isEnd ? "end" : ""} ${endGame.isLost ? "lost" : ""}`}>
+                        <p>{endGame.msg}</p>
                     </div>
                 </div >
                 }

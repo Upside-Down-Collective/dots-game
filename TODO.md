@@ -10,7 +10,7 @@
 - [X] Style room code, margin on new game button looks weird because of that
 - [X] Responsive navbar
 - [X] Add animations to nav
-- [ ] Red background when user loses?
+- [X] Red background when user loses
 - [X] Join room page on mobile
 - [X] Smaller font on mobile (endgame alert)
 - [X] Style loading
