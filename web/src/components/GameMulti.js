@@ -215,7 +215,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
                 </div >
                 }
                 <div className="game-info">
-                    {turn === 0 && <p>Your room code: {roomCode}, <br />waiting for the opponent to join</p>}
+                    {turn === 0 && <p className='room-code'>Your room code: {roomCode}, <br />waiting for the opponent to join</p>}
                     <p className="p1-points"> <span className={`${turn === 1 ? "turn" : ""}`}> {playerNum === 1 ? "You:" : "Opponent:"} </span> {points[0]} points</p>
                     <p className="p2-points"><span className={`${turn === 2 ? "turn" : ""}`}>{playerNum === 2 ? "You:" : "Opponent:"} </span> {points[1]} points</p>
                     <button onClick={restart}>New Game</button>
