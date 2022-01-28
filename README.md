@@ -75,3 +75,9 @@ This is a bash script, which is used for executing commands on container start.
 
 ### docker-build.sh
 This is a bash script, which is used to build Docker image. Also, there is symlink located in root directory of the repository. Intended action to build image is to execute mentioned symlink.
+
+
+## HAProxy - load balancing
+In root directory of the repository is a directory named `HAProxy`, which contains example `haproxy.cfg`.  
+If you wish to asign a domain name or a subdomain to server hosted by You, this file and generally speaking load balancing comes in handy.  
+Setting static IP address for Docker container running this project is main reason for simple setup of HAProxy and assigning subdomain.
