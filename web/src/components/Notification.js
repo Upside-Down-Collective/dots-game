@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./Notification.module.css"
 
-const Notification = ({ msg, duration }) => {
-    const [active, setActive] = useState(false);
-
+const Notification = ({ msg, active, dispatch, action }) => {
     useEffect(() => {
-        setActive(true);
-        const timer = setTimeout(() => setActive(false), duration);
+        const timer = active ? setTimeout(() => dispatch({ type: action, active: false }), 2500) : null;
         return () => clearTimeout(timer);
-    }, [duration]);
+    }, [active, dispatch, action]);
 
     const closeNotif = () => {
-        setActive(false);
+        dispatch({ type: action, active: false })
     }
 
     return (
-        <div className={`${styles.notif} ${active && styles.active}`}>
+        <div className={`${styles.notif} ${active ? styles.active : ''}`}>
             <p>{msg}</p >
             <span onClick={closeNotif}>&#10799;</span>
         </div >

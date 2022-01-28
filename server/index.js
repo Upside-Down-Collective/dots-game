@@ -6,7 +6,6 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 5000;
-const clientRooms = {};
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -15,9 +14,7 @@ app.get('/*', function (req, res) {
 });
 
 io.on('connection', (socket) => {
-    console.log('a user connected with id: ', socket.id);
-
-    socket.on('joinRoom', (gameCode) => {
+    socket.on('join-room', (gameCode) => {
         const room = io.sockets.adapter.rooms.get(gameCode)
 
         let numClients = 0;
@@ -34,7 +31,6 @@ io.on('connection', (socket) => {
             return;
         }
 
-        clientRooms[socket.id] = gameCode;
         socket.join(gameCode);
         socket.number = 2;
         socket.emit('init', 2, gameCode)
@@ -42,11 +38,8 @@ io.on('connection', (socket) => {
         io.to(gameCode).emit('start-game');
     })
 
-    socket.on('newRoom', () => {
+    socket.on('new-room', () => {
         let roomName = makeid(5);
-        clientRooms[socket.id] = roomName;
-        socket.emit('gameCode', roomName);
-
         socket.join(roomName)
         socket.number = 1;
         socket.emit('init', 1, roomName);
@@ -63,10 +56,6 @@ io.on('connection', (socket) => {
     socket.on("restart-game-responce", (isReady, roomCode) => {
         socket.to(roomCode).emit("restart-game-ready", isReady)
     })
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
 });
 
 

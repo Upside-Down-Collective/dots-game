@@ -1,21 +1,23 @@
 # TODO
 ## Notifications and alerts
-- [ ] Rewrite notifications to useReduser so it's easier to manage. 
+- [X] Rewrite notifications to useReduser so it's easier to manage 
 - [X] Add ability to close notifications
-- [ ] Notification when waiting for other user's responce on new game and if the user rejected restarting the game 
-- [ ] Check if notifications looks ok on mobile
+- [X] Notification when waiting for other user's responce on new game and if the user rejected restarting the game 
+- [X] Check if notifications look ok on mobile
+- [X] Multiple notifications just go on top of one another, fix that
 
 ## Styles
-- [ ] Style room code, margin on new game button looks weird because of that
-- [ ] Responsive navbar
-- [ ] Red background when user loses?
-- [ ] Join room page on mobile
-- [ ] Smaller font on mobile (endgame alert)
-- [ ] Style loading 
+- [X] Style room code, margin on new game button looks weird because of that
+- [X] Responsive navbar
+- [X] Add animations to nav
+- [X] Red background when user loses
+- [X] Join room page on mobile
+- [X] Smaller font on mobile (endgame alert)
+- [X] Style loading
+- [ ] Animation on oponent move, where it occurs
+
+## Other 
+- [X] Add a not found page
 
 ## Server
-- [ ] figure out build.
-
-### Links that might be useful
-- [server side vs client side routing](https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually)
-- [Documentation](https://create-react-app.dev/docs/deployment/)
+- [X] figure out build.

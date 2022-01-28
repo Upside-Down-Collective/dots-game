@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { makeGrid, makeBoxes, drawDots } from './utils';
+import { makeGrid, makeBoxes, drawDots } from '../utils';
 
 function whoWon(points) {
     if (points[0] > points[1]) {
