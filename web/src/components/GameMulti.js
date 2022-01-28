@@ -184,21 +184,23 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
             {isAlert && <Alert handleClickNo={handleClickNo} handleClickYes={handleClickYes} />}
             <section className="Game">
 
-                <Notification
-                    msg={notifications.waitingForResponce.msg}
-                    active={notifications.waitingForResponce.isActive}
-                    dispatch={dispatch}
-                    action={ACTIONS.WAITING_FOR_RESPONCE} />
-                <Notification
-                    msg={notifications.newGameDenied.msg}
-                    active={notifications.newGameDenied.isActive}
-                    dispatch={dispatch}
-                    action={ACTIONS.NEW_GAME_DENIED} />
-                <Notification
-                    msg={notifications.userLeft.msg}
-                    active={notifications.userLeft.isActive}
-                    dispatch={dispatch}
-                    action={ACTIONS.USER_LEFT} />
+                <div className="notif-container">
+                    <Notification
+                        msg={notifications.userLeft.msg}
+                        active={notifications.userLeft.isActive}
+                        dispatch={dispatch}
+                        action={ACTIONS.USER_LEFT} />
+                    <Notification
+                        msg={notifications.newGameDenied.msg}
+                        active={notifications.newGameDenied.isActive}
+                        dispatch={dispatch}
+                        action={ACTIONS.NEW_GAME_DENIED} />
+                    <Notification
+                        msg={notifications.waitingForResponce.msg}
+                        active={notifications.waitingForResponce.isActive}
+                        dispatch={dispatch}
+                        action={ACTIONS.WAITING_FOR_RESPONCE} />
+                </div>
 
                 {lines && <div className="game-grid">
                     {//draws boxes (squares)

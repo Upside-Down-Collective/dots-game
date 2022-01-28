@@ -4,7 +4,7 @@
 - [X] Add ability to close notifications
 - [X] Notification when waiting for other user's responce on new game and if the user rejected restarting the game 
 - [X] Check if notifications look ok on mobile
-- [ ] Multiple notifications just go on top of one another, fix that
+- [X] Multiple notifications just go on top of one another, fix that
 
 ## Styles
 - [X] Style room code, margin on new game button looks weird because of that

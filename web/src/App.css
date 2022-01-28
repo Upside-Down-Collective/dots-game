@@ -138,6 +138,15 @@ a:hover {
   }
 }
 
+/* NOTIFICATIONS */
+
+.notif-container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10 !important;
+}
+
 /* MULTIPLAYER, JOIN ROOM */
 
 .JoinRoom {
