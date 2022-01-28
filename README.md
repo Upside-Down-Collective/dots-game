@@ -5,7 +5,7 @@ In this project, Docker is used to easily set up hosting `Dots and Boxes` app.
 
 ### TLDR
 Probably some of you may want to quickly set everything up, in this case, here is a short guide.  
-Clone repository or copy and create file named `docker-compose.yml` containing this:
+Clone repository or create file named `docker-compose.yml` containing this:
 ``` yml
 version: '3.3'
 
