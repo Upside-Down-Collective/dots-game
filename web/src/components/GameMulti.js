@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useReducer } from 'react';
-import { makeGrid, makeBoxes, drawDots } from './utils';
+import { makeGrid, makeBoxes, drawDots } from '../utils';
 import Notification from './Notification';
 import Alert from './Alert';
 

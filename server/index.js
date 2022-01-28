@@ -10,7 +10,7 @@ const io = require('socket.io')(server, {
 const PORT = process.env.PORT || 5000;
 
 io.on('connection', (socket) => {
-    socket.on('joinRoom', (gameCode) => {
+    socket.on('join-room', (gameCode) => {
         const room = io.sockets.adapter.rooms.get(gameCode)
 
         let numClients = 0;
@@ -34,10 +34,8 @@ io.on('connection', (socket) => {
         io.to(gameCode).emit('start-game');
     })
 
-    socket.on('newRoom', () => {
+    socket.on('new-room', () => {
         let roomName = makeid(5);
-        socket.emit('gameCode', roomName);
-
         socket.join(roomName)
         socket.number = 1;
         socket.emit('init', 1, roomName);

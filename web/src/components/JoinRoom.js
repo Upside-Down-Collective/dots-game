@@ -12,12 +12,12 @@ function JoinRoom({ socket }) {
     }, [socket])
 
     function joinRoom() {
-        socket.emit("joinRoom", roomCode)
+        socket.emit("join-room", roomCode)
         setRoomCode('');
     }
 
     function newRoom() {
-        socket.emit("newRoom");
+        socket.emit("new-room");
     }
 
     return (
