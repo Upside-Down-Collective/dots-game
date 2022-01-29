@@ -67,7 +67,7 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
         },
         waitingForResponce: {
             isActive: false,
-            msg: "Waiting for the opponent's responce."
+            msg: "Waiting for the opponent's response."
         },
         newGameDenied: {
             isActive: false,
@@ -117,9 +117,10 @@ function GameMulti({ socket, playerNum, roomCode, gridSize }) {
 
     const newGame = useCallback(() => {
         setLines(makeGrid(gridSize));
-        setBoxes(makeBoxes(gridSize))
+        setBoxes(makeBoxes(gridSize));
         setTurn(1);
         setLineCount(0);
+        setPoints([0, 0]);
         setEndGame({
             isEnd: false,
             msg: "",

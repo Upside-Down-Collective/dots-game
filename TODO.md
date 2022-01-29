@@ -1,8 +1,8 @@
 # TODO
 ## Notifications and alerts
-- [X] Rewrite notifications to useReduser so it's easier to manage 
+- [X] Rewrite notifications to useReduser
 - [X] Add ability to close notifications
-- [X] Notification when waiting for other user's responce on new game and if the user rejected restarting the game 
+- [X] Notification when waiting for other user's response on new game and if the user rejected restarting the game 
 - [X] Check if notifications look ok on mobile
 - [X] Multiple notifications just go on top of one another, fix that
 
