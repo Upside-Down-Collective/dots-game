@@ -1,4 +1,21 @@
 # Dots and Boxes
+A game made in react with socket.io for multiplayer functionality and node.js for backend.
+
+## Build
+Before building the project, in the `web/components/Multiplayer.js` file, change this line of code: ``const s = io(`http://${window.location.hostname}:5000`)`` to `const s = io()`  
+Also, in the `server/index.js` add this code:
+```js
+const path = require('path');
+const io = require('socket.io')(server);
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+```
+
+To build a production version of the project run `npm run build` inside the web directory.
 
 ## Docker
 In this project, Docker is used to easily set up hosting `Dots and Boxes` app.
