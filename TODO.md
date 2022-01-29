@@ -21,3 +21,6 @@
 
 ## Server
 - [X] figure out build.
+
+## Docker
+- [ ] Add arm64 support
