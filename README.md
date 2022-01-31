@@ -1,5 +1,10 @@
 # Dots and Boxes
-A game made in react with socket.io for multiplayer functionality and node.js for backend.
+A game made in react with socket.io for multiplayer functionality and node.js for backend.  
+**Links**:
+* [**You can view this README in a form of website.**](https://dots-info.cimlah.art)
+* [**GitHub**](https://github.com/lemmoor/dots-game)
+* [**DockerHub**](https://hub.docker.com/r/cimlah/dots-game)
+* [**Dots and Boxes**](https://dots-and-boxes.cimlah.art) - sadly, this server does not run 24/7
 
 ## Build
 Before building the project, in the `web/src/components/Multiplayer.js` file, change this line of code: ``const s = io(`http://${window.location.hostname}:5000`)`` to `const s = io()`  
